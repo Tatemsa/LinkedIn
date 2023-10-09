@@ -1,12 +1,37 @@
 <?php 
     namespace App\Table;
+    
+    use App\App;
+    class Article extends Table{
+        
+        protected static $table = 'posts';
+        
+        public static function find($id){
+            return self::query("
+                                SELECT posts.id, posts.title, posts.content, categories.title as category
+                                FROM posts 
+                                LEFT JOIN categories ON category_id = categories.id
+                                WHERE posts.id = ?
+                             ", [$id], true); 
+        }
+        
+        public static function getLast(){
+            return self::query("
+                            SELECT posts.id, posts.title, posts.content, categories.title as category
+                            FROM posts LEFT JOIN categories 
+                            ON category_id = categories.id
+                            ORDER BY posts.date DESC
+                        "); 
+        }
 
-    class Article{
-
-        public function __get($key){
-            $method = 'get' . ucfirst($key);
-            $this->$key = $this->$method();
-            return $this->$key;
+        public static function lastByCategory($categorie_id){
+            return self::query("
+                            SELECT posts.id, posts.title, posts.content, categories.title as category
+                            FROM posts 
+                            LEFT JOIN categories ON category_id = categories.id
+                            WHERE category_id = ?
+                            ORDER BY posts.date DESC
+                        ", [$categorie_id]); 
         }
 
         public function getExtrait(){

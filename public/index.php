@@ -9,14 +9,14 @@
         $p = 'home';
     }
 
-    //INITIALISATION DES OBJETS
-    $db = new App\Database('linkedindb');
 
     ob_start();
     if($p === 'home'){
         require '../pages/home.php';
     }elseif ($p === 'posts') {
         require '../pages/single.php';
+    }elseif ($p === 'category') {
+        require '../pages/category.php';
     }
 
     $content = ob_get_clean();
