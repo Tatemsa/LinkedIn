@@ -3,32 +3,53 @@
     namespace App;
     class App{
 
-        const DB_NAME = 'linkedindb';
-        const DB_USER = 'root';
-        const DB_HOST = 'localhost';
-        const DB_PASSWORD = '';
-        private static $database;
-        private static $title = "LinkedIn";
+     
+        private $title = "LinkedIn";
+        private $db_instance;
+        private static $_instance;
 
 
-        public static function getDb(){
-            if(self:: $database == null){
-                self::$database = new Database(self::DB_NAME, self::DB_USER, self::DB_PASSWORD, self::DB_HOST);
+
+        public static function getInstanceDb(){
+            if(is_null(self::$_instance)){
+                self::$_instance = new App();
             }
+
+            return self::$_instance;
+
+        }
+
+        public function getTable($name){
+            $class_name = '\\App\\Table\\'. ucfirst($name). 'Table';
+            return new $class_name();
+        }
+
+        public function getDb(){
+            $config = Config::getInstance();
+            if($this->db_instance){
+                $this->db_instance = new Database($config->get('db_name'),$config->get('db_user'), $config->get('db_password'), $config->get('db_host'));
+            }
+           return $this->db_instance;
+        }
+
+        // public function getDb(){
+        //     if(self:: $database == null){
+        //         self::$database = new Database($this->settings['db_name'],$this->settings['db_user'], $this->settings['db_password'], $this->settings['db_host']);
+        //     }
             
-            return self::$database;
-        }
+        //     return self::$database;
+        // }
 
-        public static function notFound(){
-            header("HTTP/1.0 404 Not Found");
-            header("Location: index.php?p=404 ");
-        }
+        // public function notFound(){
+        //     header("HTTP/1.0 404 Not Found");
+        //     header("Location: index.php?p=404 ");
+        // }
 
-        public static function getTitle(){
-            return self::$title;
-        }
+        // public function getTitle(){
+        //     return self::$title;
+        // }
 
-        public static function setTitle($title){
-            self::$title = $title;
-        }
+        // public function setTitle($title){
+        //     self::$title = $title;
+        // }
     }
