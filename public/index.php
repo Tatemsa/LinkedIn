@@ -2,9 +2,10 @@
     require '../app/Autoloader.php';
     App\Autoloader::register();
 
-    $post= App\App::getInstanceDb();
+    $app= App\App::getInstanceDb();
     
-    var_dump($post->getTable("Posts"));
+    $posts = $app->getTable("Posts");
+    var_dump($posts->all());
     // if(isset($_GET['p']))
     // {
     //     $p = $_GET['p'];

@@ -7,15 +7,13 @@
         private $settings = [];
         private static $_instance = [];
         public function __construct(){
-
             $this->settings = require dirname(__DIR__) .'/config/Config.php';
         }
 
         public static function getInstance(){
-            if(is_null(self::$_instance)){
+            if(self::$_instance === []){
                 self::$_instance = new Config();
             }
-
             return self::$_instance;
         }
 
