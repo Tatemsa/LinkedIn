@@ -1,18 +1,18 @@
 <?php 
 
-    namespace App;
+    namespace Core;
 
     class Config{
 
         private $settings = [];
         private static $_instance = [];
-        public function __construct(){
-            $this->settings = require dirname(__DIR__) .'/config/Config.php';
+        public function __construct($file){
+            $this->settings = require($file);
         }
 
-        public static function getInstance(){
+        public static function getInstance($file){
             if(self::$_instance === []){
-                self::$_instance = new Config();
+                self::$_instance = new Config($file);
             }
             return self::$_instance;
         }

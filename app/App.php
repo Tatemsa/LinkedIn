@@ -1,13 +1,11 @@
 <?php
 
-    namespace App;
-
-    use App\Database\MysqlDatabase;
+    use Core\Database\MysqlDatabase;
+    use Core\Config;
 
     class App{
 
-     
-        private $title = "LinkedIn";
+        public $title = "LinkedIn";
         private $db_instance;
         private static $_instance;
 
@@ -28,31 +26,32 @@
         }
 
         public function getDb(){
-            $config = Config::getInstance();
+            $config = Config::getInstance(ROOT . '/config/config.php');
             if($this->db_instance === null){
                 $this->db_instance = new MysqlDatabase($config->get('db_name'),$config->get('db_user'), $config->get('db_password'), $config->get('db_host'));
             }
            return $this->db_instance;
         }
 
-        // public function getDb(){
-        //     if(self:: $database == null){
-        //         self::$database = new Database($this->settings['db_name'],$this->settings['db_user'], $this->settings['db_password'], $this->settings['db_host']);
-        //     }
-            
-        //     return self::$database;
-        // }
+        public static function load(){
+            session_start();
+            require ROOT . '/app/Autoloader.php';
+            App\Autoloader::register();
+            require ROOT . '/core/Autoloader.php';
+            Core\Autoloader::register();
 
-        // public function notFound(){
-        //     header("HTTP/1.0 404 Not Found");
-        //     header("Location: index.php?p=404 ");
-        // }
+        }
+
+        public function notFound(){
+            header("HTTP/1.0 404 Not Found");
+            header("Location: index.php?p=404 ");
+        }
 
         // public function getTitle(){
         //     return self::$title;
         // }
 
-        // public function setTitle($title){
-        //     self::$title = $title;
-        // }
+        public function setTitle($title){
+            $this->title = $this->title . ' | ' . $title;
+        }
     }

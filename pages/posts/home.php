@@ -1,6 +1,6 @@
 
 <div>
-    <?php foreach(App\Table\Article::getLast() as $post):?>
+    <?php foreach(App::getInstanceDb()->getTable('Post')->last() as $post):?>
 
 
        <h2><a href="<?= $post->url; ?>"> <?= $post->title; ?></a></h2>
@@ -14,7 +14,7 @@
     </div>
 
     <div>
-        <?php foreach(App\Table\Category::all() as $category): ?>
+        <?php foreach(App::getInstanceDb()->getTable('Category')->all() as $category): ?>
             <li><a href="<?= $category->url; ?>"> <?= $category->title; ?> </a></li>
         <?php endforeach?>
     </div>

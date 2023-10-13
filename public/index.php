@@ -1,29 +1,26 @@
 <?php
-    require '../app/Autoloader.php';
-    App\Autoloader::register();
+    define('ROOT', dirname(__DIR__));
+    require ROOT . '/app/App.php';
+    App::load();
 
-    $app= App\App::getInstanceDb();
+    if(isset($_GET['page']))
+    {
+        $page = $_GET['page'];
+    }else{
+        $page = 'home';
+    }
+
+
+    ob_start();
+    if($page === 'home'){
+        require ROOT . '/pages/posts/home.php';
+    }elseif ($page === 'posts.show') {
+        require ROOT . '/pages/posts/show.php';
+    }elseif ($page === 'posts.category') {
+        require ROOT . '/pages/posts/category.php';
+    }
+
+    $content = ob_get_clean();
     
-    $posts = $app->getTable("Posts");
-    var_dump($posts->all());
-    // if(isset($_GET['p']))
-    // {
-    //     $p = $_GET['p'];
-    // }else{
-    //     $p = 'home';
-    // }
-
-
-    // ob_start();
-    // if($p === 'home'){
-    //     require '../pages/home.php';
-    // }elseif ($p === 'posts') {
-    //     require '../pages/single.php';
-    // }elseif ($p === 'category') {
-    //     require '../pages/category.php';
-    // }
-
-    // $content = ob_get_clean();
-    
-    // require '../pages/template/default.php';
+    require ROOT . '/pages/template/default.php';
 
