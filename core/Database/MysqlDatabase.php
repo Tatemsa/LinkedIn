@@ -34,10 +34,16 @@
             return $datas;
         }
         
-        public function prepare($statement, $attribute, $class_name, $one = false){
+        public function prepare($statement, $attribute, $class_name = null, $one = false){
             $req = $this->getPDO()->prepare($statement);
             $req->execute($attribute);
-            $req->setFetchMode(PDO::FETCH_CLASS, $class_name);
+
+            if($class_name === null){
+                $req->setFetchMode(PDO::FETCH_OBJ);    
+            } else {
+                $req->setFetchMode(PDO::FETCH_CLASS, $class_name);
+            }
+
             if($one){
                 $datas = $req->fetch();
             }else{

@@ -1,30 +1,34 @@
 <?php
+
+    use \Core\Auth\DBAuth;
+
     define('ROOT', dirname(__DIR__));
     require ROOT . '/app/App.php';
     App::load();
 
     if(isset($_GET['page']))
     {
-        if(is_null($_GET['page'])){
-            $page = 'home';
-        } else {
-            $page = $_GET['page'];
-        }
-        
-    } else {
+        $page = $_GET['page'];
+    }else{
         $page = 'home';
     }
 
 
+    //Auth
+
+    $app = App::getInstanceDb();
+    $auth = new DBAuth($app->getDb());
+    if(!$auth->logged()){
+        $app->forbidden();
+    }
+
     ob_start();
     if($page === 'home'){
-        require ROOT . '/pages/posts/home.php';
+        require ROOT . '/pages/admin/posts/index.php';
     } elseif ($page === 'posts.show') {
-        require ROOT . '/pages/posts/show.php';
+        require ROOT . '/pages/admin/posts/show.php';
     } elseif ($page === 'posts.category') {
-        require ROOT . '/pages/posts/category.php';
-    } elseif ($page === 'login') {
-        require ROOT . '/pages/users/login.php';
+        require ROOT . '/pages/admin/posts/category.php';
     }
 
     $content = ob_get_clean();
