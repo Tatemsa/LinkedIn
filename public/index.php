@@ -3,13 +3,9 @@
     require ROOT . '/app/App.php';
     App::load();
 
-    if(isset($_GET['page']))
+    if(isset($_GET['p']))
     {
-        if(is_null($_GET['page'])){
-            $page = 'home';
-        } else {
-            $page = $_GET['page'];
-        }
+        $page = $_GET['p'];
         
     } else {
         $page = 'home';

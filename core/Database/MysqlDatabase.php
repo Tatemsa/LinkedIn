@@ -20,6 +20,9 @@
 
         public function query($statement, $class_name = null, $one=false){
             $req = $this->getPDO()->query($statement);
+            if(strpos($statement, 'UPDATE')===0 || strpos($statement, 'INSERT')===0 || strpos($statement, 'DELETE')===0){
+                return $req;
+            }
             if($class_name === null){
                 $req->setFetchMode(PDO::FETCH_OBJ);    
             } else {
@@ -36,7 +39,11 @@
         
         public function prepare($statement, $attribute, $class_name = null, $one = false){
             $req = $this->getPDO()->prepare($statement);
-            $req->execute($attribute);
+            $res = $req->execute($attribute);
+
+            if(strpos($statement, 'UPDATE')===0 || strpos($statement, 'INSERT')===0 || strpos($statement, 'DELETE')===0){
+                return $res;
+            }
 
             if($class_name === null){
                 $req->setFetchMode(PDO::FETCH_OBJ);    
@@ -53,6 +60,11 @@
             return $datas; 
 
         } 
+
+        public function lastInsertId(){
+            var_dump($this->getPDO()->lastInsertId());
+            return $this->getPDO()->lastInsertId();
+        }
 
         private function getPDO(){
             if($this->pdo == null){
