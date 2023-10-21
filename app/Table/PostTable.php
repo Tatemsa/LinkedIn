@@ -20,13 +20,13 @@
 
 
         /**
-         * Recupereun article en le liant a sa categorie
-         * @param $category_id Int
+         * Recupere un article en le liant a sa categorie
+         * @param int $category_id 
          *  @return \App\Entity\PostEntity
          */
         public function find($id){
             return $this->query("
-                                SELECT posts.id, posts.title, posts.content, posts.date, categories.title as category
+                                SELECT posts.id, posts.title, posts.content, posts.date, posts.category_id , categories.title as category
                                 FROM ". $this->table ."
                                 LEFT JOIN categories ON posts.category_id = categories.id
                                 WHERE posts.id=?",
@@ -35,7 +35,7 @@
 
         /**
          * Recupereun les derniers article de la classe demandee
-         * @param $category_id Int
+         * @param int $category_id
          * @return array
          */
         public function getLastByCategory($category_id){

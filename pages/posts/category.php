@@ -7,6 +7,7 @@
     }
     $posts = $app->getTable('Post')->getLastByCategory($_GET['id']);
     $categories = $app->getTable('Category')->all();
+    $app->setTitle($category->title);
     
 ?>
 
