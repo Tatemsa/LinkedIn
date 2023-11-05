@@ -1,21 +1,7 @@
-<?php
-
-    $app = App::getInstanceDb();
-    $category = $app->getTable('Category')->find($_GET['id']);
-    if($category===null){
-        $app->notFound();
-    }
-    $posts = $app->getTable('Post')->getLastByCategory($_GET['id']);
-    $categories = $app->getTable('Category')->all();
-    $app->setTitle($category->title);
-    
-?>
-
 <h1><?= $category->title; ?></h1>
 
 <div>
     <?php foreach($posts as $post):?>
-
 
        <h2><a href="<?= $post->url; ?>"> <?= $post->title; ?></a></h2>
        <p>

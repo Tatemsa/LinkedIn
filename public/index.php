@@ -8,22 +8,18 @@
         $page = $_GET['p'];
         
     } else {
-        $page = 'home';
+        $page = 'posts.index';
     }
 
-
-    ob_start();
-    if($page === 'home'){
-        require ROOT . '/pages/posts/home.php';
-    } elseif ($page === 'posts.show') {
-        require ROOT . '/pages/posts/show.php';
-    } elseif ($page === 'posts.category') {
-        require ROOT . '/pages/posts/category.php';
-    } elseif ($page === 'login') {
-        require ROOT . '/pages/users/login.php';
-    }
-
-    $content = ob_get_clean();
     
-    require ROOT . '/pages/template/default.php';
-
+    $page = explode('.', $page);
+    if($page[0] == "admin"){
+        $controller = '\App\Controller\Admin\\' . ucfirst($page[1]) . 'Controller';
+        $action = $page[2];
+    } else {
+        $controller = '\App\Controller\\' . ucfirst($page[0]) . 'Controller';
+        $action = $page[1];
+    }
+    $controller = new $controller();
+    $controller->$action();
+   
